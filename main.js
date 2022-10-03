@@ -4,6 +4,7 @@ const hambMenu = document.querySelector('.menu');       // Hamburguer menu in mo
 const mobileMenu = document.querySelector('.mobile-menu');
 const cartIcon = document.querySelector('.navbar-shopping-cart');
 const aside = document.querySelector('.product-detail');
+const cardsContainer = document.querySelector('.cards-container');
 
 // Iteration with account menu in desktop version
 
@@ -26,7 +27,6 @@ function toggleMobileMenu() {
 }
 
 // Iteration with shopping cart icon
-
 cartIcon.addEventListener('click', toggleAsideContent);
 
 function toggleAsideContent() {
@@ -45,3 +45,76 @@ function hideElement(element) {
         element.classList.add('hidden');
     }
 }
+
+// Iteration with the product list in section main container
+
+const productList = [];
+// Adding object elements to the array with information about product
+productList.push( {
+    name: "Bike",
+    price: 300,
+    imgURL: "https://assets.specialized.com/i/specialized/98122-31_CREO-SL-EXPERT-CARBON-TLTNT-ABLN_FDSQ?bg=rgb(255,255,255)&w=2500&h=1406&fmt=auto"
+} );
+
+productList.push( {
+    name: "Helmet",
+    price: 224.99,
+    imgURL: "https://m.media-amazon.com/images/I/6176YCj7ThL._AC_UX679_.jpg"
+} );
+
+productList.push( {
+    name: "Cadence sensor",
+    price: 39.99,
+    imgURL: "https://res.garmin.com/en/products/010-12844-00/g/cf-lg-2882d60f-6503-48ca-969b-84b964a3e933.jpg"
+} );
+
+renderProducts(productList);
+
+// Function to render the product list in product section
+// @products: object array with the list of products to be rendered
+function renderProducts(products) {
+    
+    for (const product of products) {
+        // <div class="product-card">
+        const productCard = document.createElement('div');  // Create an element in HTML document
+        productCard.classList.add('product-card');          // Add a class to the element created as productCard
+        // <img src="https://..." alt="">
+        const productImg = document.createElement('img');
+        productImg.setAttribute('src', product.imgURL)
+        //<div class="product-info">
+        const productInfo = document.createElement('div');
+        productInfo.classList.add('product-info');
+        /* <div>
+            <p>$120,00</p>
+            <p>Bike</p>
+           </div> */
+        const productInfoDiv = document.createElement('div');
+        const productInfoDivPrice = document.createElement('p');
+        const productInfoDivName = document.createElement('p');
+    
+        productInfoDivPrice.innerText = "$ " + product.price;
+        productInfoDivName.innerText = product.name;
+        
+        productInfoDiv.appendChild(productInfoDivPrice);
+        productInfoDiv.appendChild(productInfoDivName);
+        
+        /* <figure>
+        <img src="./icons/bt_add_to_cart.svg" alt="">
+        </figure */
+        const productInfoFigure = document.createElement('figure');
+        const productInfoFigureImgCart = document.createElement('img');
+        
+        productInfoFigureImgCart.setAttribute('src', "./icons/bt_add_to_cart.svg");
+        
+        productInfoFigure.appendChild(productInfoFigureImgCart);
+        
+        productInfo.appendChild(productInfoDiv);
+        productInfo.appendChild(productInfoFigure);
+    
+        productCard.appendChild(productImg);
+        productCard.appendChild(productInfo);
+    
+        cardsContainer.appendChild(productCard);
+    }
+}
+
