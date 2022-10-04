@@ -3,16 +3,18 @@ const desktopMenu = document.querySelector('.desktop-menu');
 const hambMenu = document.querySelector('.menu');       // Hamburguer menu in mobile version
 const mobileMenu = document.querySelector('.mobile-menu');
 const cartIcon = document.querySelector('.navbar-shopping-cart');
-const aside = document.querySelector('.product-detail');
+const shoppingCart = document.querySelector('#shoppingCart');
 const cardsContainer = document.querySelector('.cards-container');
+const productDetail = document.querySelector('#productDetail');
+const productDetailClose = document.querySelector('.product-detail-close')
 
 // Iteration with account menu in desktop version
 
 navEmail.addEventListener('click', toggleDesktopMenu);
 
 function toggleDesktopMenu() {
-    hideElement(aside);
-    
+    hideElement(shoppingCart);
+    hideElement(productDetail);
     // JuanDC solution
     desktopMenu.classList.toggle('hidden');
 }
@@ -22,21 +24,35 @@ function toggleDesktopMenu() {
 hambMenu.addEventListener('click', toggleMobileMenu);
 
 function toggleMobileMenu() {
-    hideElement(aside);
+    hideElement(shoppingCart);
+    hideElement(productDetail);
     mobileMenu.classList.toggle('hidden');
 }
 
 // Iteration with shopping cart icon
-cartIcon.addEventListener('click', toggleAsideContent);
+cartIcon.addEventListener('click', toggleShoppingCart);
 
-function toggleAsideContent() {
+function toggleShoppingCart() {
     hideElement(desktopMenu);
     hideElement(mobileMenu);
-
-    aside.classList.toggle('hidden');
+    hideElement(productDetail);
+    shoppingCart.classList.toggle('hidden');
 }
 
-// Function to apply the class selector hidden to hide the element
+function openProductDetail() {
+    hideElement(desktopMenu);
+    hideElement(mobileMenu);
+    hideElement(shoppingCart);
+    showElement(productDetail);
+}
+
+productDetailClose.addEventListener('click', closeProductDetail);
+
+function closeProductDetail() {
+    hideElement(productDetail);
+}
+
+// Function to apply the class selector 'hidden' to hide the element
 // @element: selector required to be hidden
 function hideElement(element) {
     const isHiddenElement = element.classList.contains('hidden');
@@ -46,13 +62,23 @@ function hideElement(element) {
     }
 }
 
+// Function to remove the class selector 'hidden' to show the element
+// @element: selector required to be showed
+function showElement(element) {
+    const isHiddenElement = element.classList.contains('hidden');
+
+    if (isHiddenElement) {
+        element.classList.remove('hidden');
+    }
+}
+
 // Iteration with the product list in section main container
 
 const productList = [];
 // Adding object elements to the array with information about product
 productList.push( {
     name: "Bike",
-    price: 300,
+    price: 399.99,
     imgURL: "https://assets.specialized.com/i/specialized/98122-31_CREO-SL-EXPERT-CARBON-TLTNT-ABLN_FDSQ?bg=rgb(255,255,255)&w=2500&h=1406&fmt=auto"
 } );
 
@@ -68,10 +94,16 @@ productList.push( {
     imgURL: "https://res.garmin.com/en/products/010-12844-00/g/cf-lg-2882d60f-6503-48ca-969b-84b964a3e933.jpg"
 } );
 
+productList.push( {
+    name: "GPS",
+    price: 299.99,
+    imgURL: "https://res.garmin.com/en/products/010-02060-00/v/cf-lg-fa1cc038-7c87-4edc-8c66-20db27c83e21.jpg"
+} );
+
 renderProducts(productList);
 
 // Function to render the product list in product section
-// @products: object array with the list of products to be rendered
+// @products: object array with the list of products to be rendered. {name, price, imgURL}
 function renderProducts(products) {
     
     for (const product of products) {
@@ -81,6 +113,7 @@ function renderProducts(products) {
         // <img src="https://..." alt="">
         const productImg = document.createElement('img');
         productImg.setAttribute('src', product.imgURL)
+        productImg.addEventListener('click', openProductDetail);
         //<div class="product-info">
         const productInfo = document.createElement('div');
         productInfo.classList.add('product-info');
